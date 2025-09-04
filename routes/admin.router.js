@@ -7,6 +7,10 @@ adminRouter.post('/createAdmin',createAdmin)
 adminRouter.post('/createNewsAdmin',createNewsAdmin)
 adminRouter.post('/banner',createbanner)
 adminRouter.post('/logo',createlogo)
+adminRouter.post('/logo',createlogo)
+adminRouter.post('/logo',createlogo)
+adminRouter.post('/logo',createlogo)
+adminRouter.post('/logo',createlogo)
 
 
 export default adminRouter
