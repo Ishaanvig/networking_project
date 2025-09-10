@@ -30,7 +30,7 @@ import jwt from 'jsonwebtoken'
         
         trim:true,
     },RoleId:{
-         type:Number,
+         type:String,
         unique:true,
         required:[true,"plz enter.."],
 

@@ -3,7 +3,7 @@ import { coustmer} from '../models/coustmer.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import ApiError from '../utils/ApiError.js'
 import ApiResponse from '../utils/ApiResponse.js'
-
+import { Audit } from '../models/AuditLog.js'
 import { User } from '../models/usermodel.js'
 import { Role } from '../models/roles.js'
 import { Permission } from '../models/permissition.js'
@@ -88,6 +88,24 @@ const rl=await Role.create({
 if(!rl) throw new ApiError(401,"failure...");
 res.status(201).json (new ApiResponse(201,"you created sucessfully"));
 })
+// Delete roles
+const DeleteRoles=asyncHandler(async(req,res)=>{
+    const {RoleId}=req.body
+    const findrole=await Role.findOne({RoleId})
+    if(!findrole) throw new ApiError(401,"roles not found....")
+        const delroles=await Role.findOneAndDelete(RoleId)
+    if(!delroles) throw new ApiError(401,"not deleted any role....!!!!!!")
+        res.status (201).json(new ApiResponse(201,{},"deleted sucessfully...."))
+})
+//update roles
+const UpdateRoles=asyncHandler(async(req,res)=>{
+    const{RoleId,RoleName,Description}=req.body
+    const oldRoles=await Role.findOne({RoleId})
+    oldRoles.RoleName=RoleName
+    oldRoles.Description=Description
+    await oldRoles.save()
+    res.status(201).json(new ApiResponse(201,{},"roles are updated sucessfully......"))
+})
 //create permission api
 const createpermission=asyncHandler(async(req,res)=>{
     const { permissionID,roleID,moduleName,canView}=req.body;
@@ -104,6 +122,17 @@ permissionID,roleID,moduleName,canView
 if(!pa) throw new ApiError(401,"failed.....to accept permisson.....")
     res.status(201).json(new ApiResponse(201,"your permission aceepted.."))
 })
+//update permission
+const UpdatePermission=asyncHandler(async(req,res)=>{
+    const {permissionID,moduleName}=req.body
+    const oldPermission=await Permission.findOne({permissionID})
+oldPermission.moduleName=moduleName
+await oldPermission.save()
+res.status(201).json(new ApiResponse(201,{},"permission are updated sucessfully........"))
+})
+//delete -permission
+
+
 
 //create teams api
 const CreateTeams=asyncHandler(async(req,res)=>{
@@ -160,10 +189,14 @@ const LogOutuser=asyncHandler(async(req,res)=>{
 
         res.status(201).cookie("accessToken","").cookie("refresToken","").json(new ApiResponse(201,{},"Logout Successfully!!!!!!"))
 })
+//
 
 
-
-
+//get all teams
+const getallteams=asyncHandler(async(req,res)=>{
+    const allteams=await Team.findAll()
+    res.send(201).json(new ApiResponse(201,allteams,"featch sucessfully......."))
+})
 
 // getall  user login
 const getAllUserlogin=asyncHandler(async(req,res)=>{
